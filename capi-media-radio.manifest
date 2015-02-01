@@ -2,4 +2,7 @@
 	<request>
 		<domain name="_" />
 	</request>
+	<assign>
+		<filesystem path="/usr/bin/radio_test" label="_" exec_label="none" />
+	</assign>
 </manifest>
