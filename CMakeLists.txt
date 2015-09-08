@@ -10,7 +10,7 @@ SET(PREFIX ${CMAKE_INSTALL_PREFIX})
 SET(INC_DIR include)
 INCLUDE_DIRECTORIES(${INC_DIR})
 
-SET(dependents "dlog mm-radio capi-base-common")
+SET(dependents "dlog mm-radio capi-base-common capi-system-info")
 SET(pc_dependents "capi-base-common")
 
 INCLUDE(FindPkgConfig)
@@ -63,7 +63,7 @@ CONFIGURE_FILE(
 )
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${fw_name}.pc DESTINATION lib/pkgconfig)
 
-#ADD_SUBDIRECTORY(test)
+ADD_SUBDIRECTORY(test)
 
 IF(UNIX)
 
