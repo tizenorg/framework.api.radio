@@ -11,7 +11,7 @@
 * distributed under the License is distributed on an "AS IS" BASIS,
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
-* limitations under the License. 
+* limitations under the License.
 */
 
 #ifndef __TIZEN_MEDIA_RADIO_PRIVATE_H__
@@ -30,12 +30,13 @@ typedef enum {
 	_RADIO_EVENT_TYPE_SEEK_FINISH,
 	_RADIO_EVENT_TYPE_INTERRUPT,
 	_RADIO_EVENT_TYPE_NUM
-}_radio_event_e;
+}
+_radio_event_e;
 
-typedef struct _radio_s{
+typedef struct _radio_s {
 	MMHandleType mm_handle;
-	const void* user_cb[_RADIO_EVENT_TYPE_NUM];
-	void* user_data[_RADIO_EVENT_TYPE_NUM];
+	const void *user_cb[_RADIO_EVENT_TYPE_NUM];
+	void *user_data[_RADIO_EVENT_TYPE_NUM];
 	radio_state_e state;
 	bool mute;
 } radio_s;
@@ -44,4 +45,4 @@ typedef struct _radio_s{
 }
 #endif
 
-#endif //__TIZEN_MEDIA_RADIO_PRIVATE_H__
+#endif /*__TIZEN_MEDIA_RADIO_PRIVATE_H__ */

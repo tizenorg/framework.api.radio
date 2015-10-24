@@ -69,10 +69,10 @@ IF(UNIX)
 
 ADD_CUSTOM_TARGET (distclean @echo cleaning for source distribution)
 ADD_CUSTOM_COMMAND(
-        DEPENDS clean 
+        DEPENDS clean
         COMMENT "distribution clean"
         COMMAND find
-        ARGS    . 
+        ARGS    .
         -not -name config.cmake -and \(
         -name tester.c -or
         -name Testing -or

@@ -1,19 +1,16 @@
 #sbs-git:slp/api/radio capi-media-radio 0.1.0 59dddd8ea3de373c44c66ce2a298ca81240305a8
 Name:       capi-media-radio
 Summary:    A Radio library in Tizen Native API
-Version:    0.1.1
-Release:    12
+Version:    0.1.2
+Release:    0
 Group:      Multimedia/API
 License:    Apache-2.0
 Source0:    %{name}-%{version}.tar.gz
-BuildRequires:  pkgconfig(dbus-glib-1)
 BuildRequires:  pkgconfig(dlog)
-BuildRequires:  pkgconfig(vconf)
 BuildRequires:  pkgconfig(mm-radio)
 BuildRequires:  pkgconfig(capi-base-common)
 BuildRequires:  pkgconfig(capi-system-info)
 BuildRequires:  cmake
-BuildRequires:  gettext-devel
 
 %description
 A Radio library in Tizen Native API.
@@ -41,9 +38,9 @@ make %{?jobs:-j%jobs}
 rm -rf %{buildroot}
 %make_install
 mkdir -p %{buildroot}/usr/share/license
-mkdir -p %{buildroot}/opt/usr/devel
+mkdir -p %{buildroot}/usr/bin
 cp LICENSE.APLv2 %{buildroot}/usr/share/license/%{name}
-cp test/radio_test %{buildroot}/opt/usr/devel
+cp test/radio_test %{buildroot}/usr/bin
 
 %post
 
@@ -55,7 +52,7 @@ cp test/radio_test %{buildroot}/opt/usr/devel
 %defattr(-,root,root,-)
 /usr/lib/libcapi-media-radio.so.*
 /usr/share/license/%{name}
-/opt/usr/devel/*
+/usr/bin/*
 
 %files devel
 %defattr(-,root,root,-)

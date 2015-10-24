@@ -44,8 +44,7 @@ typedef struct radio_s *radio_h;
  * @brief Enumeration of radio state.
  * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  */
-typedef enum
-{
+typedef enum {
 	RADIO_STATE_READY,			/**< Ready to play or scan */
 	RADIO_STATE_PLAYING,		/**< Playing the audio from the tuner */
 	RADIO_STATE_SCANNING,		/**< Scanning/Searching for the next station signal that starts from a given starting frequency */
@@ -55,33 +54,32 @@ typedef enum
  * @brief Enumeration of error codes for the radio.
  * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  */
-typedef enum
-{
-	RADIO_ERROR_NONE		        = TIZEN_ERROR_NONE,								/**< Successful */
-	RADIO_ERROR_OUT_OF_MEMORY	    = TIZEN_ERROR_OUT_OF_MEMORY,				/**< Out of memory */
-	RADIO_ERROR_INVALID_PARAMETER  = TIZEN_ERROR_INVALID_PARAMETER,			/**< Invalid parameter */
+typedef enum {
+	RADIO_ERROR_NONE					= TIZEN_ERROR_NONE,						/**< Successful */
+	RADIO_ERROR_OUT_OF_MEMORY		= TIZEN_ERROR_OUT_OF_MEMORY,			/**< Out of memory */
+	RADIO_ERROR_INVALID_PARAMETER	= TIZEN_ERROR_INVALID_PARAMETER,			/**< Invalid parameter */
 	RADIO_ERROR_INVALID_OPERATION	= TIZEN_ERROR_INVALID_OPERATION,			/**< Invalid operation */
-	RADIO_ERROR_INVALID_STATE	    = TIZEN_ERROR_RADIO | 0x01	,					/**< Invalid state */
-	RADIO_ERROR_SOUND_POLICY	    = TIZEN_ERROR_RADIO | 0x02	,					/**< Sound policy error */
-	RADIO_ERROR_PERMISSION_DENIED   = TIZEN_ERROR_PERMISSION_DENIED,			/**< Permission denied */
-	RADIO_ERROR_NOT_SUPPORTED   = TIZEN_ERROR_NOT_SUPPORTED,					/**< Not supported */
+	RADIO_ERROR_INVALID_STATE			= TIZEN_ERROR_RADIO | 0x01	,				/**< Invalid state */
+	RADIO_ERROR_SOUND_POLICY			= TIZEN_ERROR_RADIO | 0x02	,				/**< Sound policy error */
+	RADIO_ERROR_NO_ANTENNA			= TIZEN_ERROR_RADIO | 0x03 ,				 /**< No Antenna error (Since 2.4) */
+	RADIO_ERROR_PERMISSION_DENIED	= TIZEN_ERROR_PERMISSION_DENIED,			/**< Permission denied */
+	RADIO_ERROR_NOT_SUPPORTED		= TIZEN_ERROR_NOT_SUPPORTED,			/**< Not supported */
 } radio_error_e;
 
 /**
  * @brief Enumeration of radio interrupted type.
  * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  */
-typedef enum
-{
-       RADIO_INTERRUPTED_COMPLETED = 0,					/**< Interrupt completed */
-       RADIO_INTERRUPTED_BY_MEDIA,						/**< Interrupted by a non-resumable media application */
-       RADIO_INTERRUPTED_BY_CALL,						/**< Interrupted by an incoming call */
-       RADIO_INTERRUPTED_BY_EARJACK_UNPLUG,			/**< Interrupted by unplugging headphones */
-       RADIO_INTERRUPTED_BY_RESOURCE_CONFLICT,		/**< Interrupted by a resource conflict */
-       RADIO_INTERRUPTED_BY_ALARM,						/**< Interrupted by an alarm */
-       RADIO_INTERRUPTED_BY_EMERGENCY,				/**< Interrupted by an emergency */
-       RADIO_INTERRUPTED_BY_RESUMABLE_MEDIA,			/**< Interrupted by a resumable media application */
-       RADIO_INTERRUPTED_BY_NOTIFICATION,				/**< Interrupted by a notification */
+typedef enum {
+	RADIO_INTERRUPTED_COMPLETED = 0,					/**< Interrupt completed */
+	RADIO_INTERRUPTED_BY_MEDIA,						/**< Interrupted by a non-resumable media application */
+	RADIO_INTERRUPTED_BY_CALL,						/**< Interrupted by an incoming call */
+	RADIO_INTERRUPTED_BY_EARJACK_UNPLUG,			/**< Interrupted by unplugging headphones */
+	RADIO_INTERRUPTED_BY_RESOURCE_CONFLICT,		/**< Interrupted by a resource conflict */
+	RADIO_INTERRUPTED_BY_ALARM,						/**< Interrupted by an alarm */
+	RADIO_INTERRUPTED_BY_EMERGENCY,				/**< Interrupted by an emergency */
+	RADIO_INTERRUPTED_BY_RESUMABLE_MEDIA,			/**< Interrupted by a resumable media application */
+	RADIO_INTERRUPTED_BY_NOTIFICATION,				/**< Interrupted by a notification */
 } radio_interrupted_code_e;
 
 /**
@@ -189,6 +187,7 @@ int  radio_get_state(radio_h radio, radio_state_e *state);
  * @retval #RADIO_ERROR_INVALID_STATE Invalid radio state
  * @retval #RADIO_ERROR_SOUND_POLICY Sound policy error
  * @retval #RADIO_ERROR_NOT_SUPPORTED Not supported
+ * @retval #RADIO_ERROR_NO_ANTENNA No Antenna error
  * @pre The radio state must be set to #RADIO_STATE_READY by calling radio_create().
  * @post The radio state will be #RADIO_STATE_PLAYING.
  * @see radio_stop()
@@ -229,7 +228,7 @@ int radio_stop(radio_h radio);
  * @post It invokes radio_seek_completed_cb() when the seek completes.
  * @see radio_seek_down()
  */
-int radio_seek_up(radio_h radio,radio_seek_completed_cb callback, void *user_data );
+int radio_seek_up(radio_h radio, radio_seek_completed_cb callback, void *user_data);
 
 /**
  * @brief Seeks down the effective frequency of the radio, asynchronously.
@@ -248,7 +247,7 @@ int radio_seek_up(radio_h radio,radio_seek_completed_cb callback, void *user_dat
  * @post It invokes radio_seek_completed_cb() when the seek completes.
  * @see radio_seek_up()
  */
-int radio_seek_down(radio_h radio,radio_seek_completed_cb callback, void *user_data );
+int radio_seek_down(radio_h radio, radio_seek_completed_cb callback, void *user_data);
 
 /**
  * @brief Sets the radio frequency.
@@ -433,6 +432,36 @@ int radio_set_interrupted_cb(radio_h radio, radio_interrupted_cb callback, void 
  * @see radio_set_interrupted_cb()
  */
 int radio_unset_interrupted_cb(radio_h radio);
+
+/**
+ * @brief Gets the min, max frequency of the region.
+ * @since_tizen 2.4
+ * @param[in]   radio The handle to radio
+ * @param[out]  min_freq The min frequency [87500 ~ 108000] (kHz)
+ * @param[out]  max_freq The max frequency [87500 ~ 108000] (kHz)
+ * @return @c 0 on success,
+ *         otherwise a negative error value
+ * @retval #RADIO_ERROR_NONE Successful
+ * @retval #RADIO_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval #RADIO_ERROR_INVALID_OPERATION Invalid operation
+ * @retval #RADIO_ERROR_NOT_SUPPORTED Not supported
+ */
+int radio_get_frequency_range(radio_h radio, int *min_freq, int *max_freq);
+
+/**
+ * @brief Gets channel spacing.
+ * @since_tizen 2.4
+ * @param[in]   radio The handle to radio
+ * @param[out]  channel_spacing The channel spacing value
+ * @return @c 0 on success,
+ *         otherwise a negative error value
+ * @retval #RADIO_ERROR_NONE Successful
+ * @retval #RADIO_ERROR_INVALID_PARAMETER Invalid parameter
+ * @retval #RADIO_ERROR_INVALID_OPERATION Invalid operation
+ * @retval #RADIO_ERROR_NOT_SUPPORTED Not supported
+ */
+int radio_get_channel_spacing(radio_h radio, int *channel_spacing);
+
 
 /**
  * @}
